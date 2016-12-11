@@ -264,6 +264,8 @@ void COgreMain::loadResources(void)
 
 	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+
+	//Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath, );
 }
 
 void COgreMain::unloadResources(void)
