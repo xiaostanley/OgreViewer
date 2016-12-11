@@ -7,17 +7,17 @@ int main(int argc, char* argv[])
 	char meshName[MAX_PATH];
 	char textureName[MAX_PATH];
 
-	if (argc == 4)
+	if (argc == 3)
 	{
 		strcpy(filePath, argv[0]);
 		strcpy(meshName, argv[1]);
-		strcpy(textureName, argv[3]);
+		strcpy(textureName, argv[2]);
 	}
 	else
 	{
 		strcpy(filePath, argv[1]);
 		strcpy(meshName, argv[2]);
-		strcpy(textureName, argv[4]);
+		strcpy(textureName, argv[3]);
 	}
 
 	std::cout << meshName << std::endl;

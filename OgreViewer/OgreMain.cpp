@@ -268,7 +268,7 @@ void COgreMain::loadResources(void)
 	// 增加资源路径
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath + "com", "FileSystem");
 	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath + "modtex", "FileSystem");
-	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath + "sim", "FileSystem");
+	//Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath + "sim", "FileSystem");
 }
 
 void COgreMain::unloadResources(void)
@@ -374,8 +374,17 @@ void COgreMain::createContent(void)
 	Ogre::Light* sunlight = mSceneMgr->createLight("sunlight");
 	sunlight->setType(Ogre::Light::LT_DIRECTIONAL);
 
+	// 创建材质
+	MaterialPtr materialPtr = MaterialManager::getSingleton().create("TerrainBase", ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME);
+	Pass* pass = materialPtr->getTechnique(0)->getPass(0);
+	pass->setLightingEnabled(false);
+	TextureUnitState* tex = pass->createTextureUnitState(textureName, 0);
+	tex->setTextureName(textureName);
+
 	// 显示地形模型
 	Entity* entTerra = mSceneMgr->createEntity("entTerra", meshName);
+	entTerra->setMaterial(materialPtr);
+
 	entTerra->getSubEntity(1)->setVisible(boundaryVisble);
 	entTerra->getSubEntity(2)->setVisible(boundaryVisble);
 	entTerra->getSubEntity(3)->setVisible(boundaryVisble);
