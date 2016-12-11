@@ -127,9 +127,16 @@ bool COgreMain::frameRenderingQueued(const Ogre::FrameEvent & evt)
 		mainCameraView.getCameraNode()->yaw(Ogre::Degree(aglYaw), Ogre::Node::TS_WORLD);
 	}
 
+	//mainCameraView.getCameraNode()->yaw(Ogre::Degree(-1.0f * (float)e.state.X.rel), Ogre::Node::TS_WORLD);
+	//mainCameraView.getCamera()->lookAt(Ogre::Vector3::ZERO);
+
 	// 显示帧率
-	Ogre::OverlayElement* textArea = OverlayManager::getSingleton().getOverlayElement("CodeText");
-	textArea->setCaption(Ogre::DisplayString(L"FPS: ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getBestFPS())));
+	Ogre::OverlayElement* textArea = OverlayManager::getSingleton().getOverlayElement("FPS_TextArea");
+	textArea->setCaption(Ogre::DisplayString(L"FPS:     ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getBestFPS())));
+	textArea = OverlayManager::getSingleton().getOverlayElement("Batch_TextArea");
+	textArea->setCaption(Ogre::DisplayString(L"Batch:   ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getBatchCount())));
+	textArea = OverlayManager::getSingleton().getOverlayElement("Triangle_TextArea");
+	textArea->setCaption(Ogre::DisplayString(L"Triangle:") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getTriangleCount())));
 
 	return true;
 }
@@ -344,13 +351,13 @@ void COgreMain::createContent(void)
 	Ogre::OverlayContainer* ovContainer = static_cast<Ogre::OverlayContainer*>(Ogre::OverlayManager::getSingleton().createOverlayElement("BorderPanel", "Container"));
 	ovContainer->setMetricsMode(GMM_RELATIVE);
 	ovContainer->setPosition(0.f, 0.f);
-	ovContainer->setWidth(0.2f);
-	ovContainer->setHeight(0.07f);
+	ovContainer->setWidth(0.23f);
+	ovContainer->setHeight(0.14f);
 	ovContainer->setMaterialName("Core/StatsBlockCenter");
 	mainOverlay->add2D(ovContainer);
 
 	// 创建文字显示区域
-	Ogre::OverlayElement* textArea = OverlayManager::getSingleton().createOverlayElement("TextArea", "CodeText");
+	Ogre::OverlayElement* textArea = OverlayManager::getSingleton().createOverlayElement("TextArea", "FPS_TextArea");
 	textArea->setMetricsMode(GMM_RELATIVE);
 	textArea->setPosition(0.01f, 0.01f);
 	textArea->setWidth(0.2f);
@@ -362,7 +369,29 @@ void COgreMain::createContent(void)
 	textArea->setCaption(Ogre::DisplayString("FPS"));
 	ovContainer->addChild(textArea);
 
-	mainOverlay->hide();
+	textArea = OverlayManager::getSingleton().createOverlayElement("TextArea", "Batch_TextArea");
+	textArea->setMetricsMode(GMM_RELATIVE);
+	textArea->setPosition(0.01f, 0.05f);
+	textArea->setWidth(0.2f);
+	textArea->setHeight(0.1f);
+	textArea->setParameter("font_name", "SimHeiFont");
+	textArea->setParameter("char_height", Ogre::StringConverter::toString(Ogre::Real(0.05f)));
+	textArea->setParameter("horz_align", "left");
+	textArea->setColour(Ogre::ColourValue(1.f, 1.f, 1.f));
+	textArea->setCaption(Ogre::DisplayString("Batch"));
+	ovContainer->addChild(textArea);
+
+	textArea = OverlayManager::getSingleton().createOverlayElement("TextArea", "Triangle_TextArea");
+	textArea->setMetricsMode(GMM_RELATIVE);
+	textArea->setPosition(0.01f, 0.09f);
+	textArea->setWidth(0.2f);
+	textArea->setHeight(0.1f);
+	textArea->setParameter("font_name", "SimHeiFont");
+	textArea->setParameter("char_height", Ogre::StringConverter::toString(Ogre::Real(0.05f)));
+	textArea->setParameter("horz_align", "left");
+	textArea->setColour(Ogre::ColourValue(1.f, 1.f, 1.f));
+	textArea->setCaption(Ogre::DisplayString("Triangle"));
+	ovContainer->addChild(textArea);
 
 	///////////////////////////////////////////////////////////////////////////////////////////////
 
