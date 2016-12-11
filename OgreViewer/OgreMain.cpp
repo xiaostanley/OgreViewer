@@ -265,7 +265,10 @@ void COgreMain::loadResources(void)
 	Ogre::TextureManager::getSingleton().setDefaultNumMipmaps(5);
 	Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
 
-	//Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath, );
+	// 增加资源路径
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath + "com", "FileSystem");
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath + "modtex", "FileSystem");
+	Ogre::ResourceGroupManager::getSingleton().addResourceLocation(filePath + "sim", "FileSystem");
 }
 
 void COgreMain::unloadResources(void)
@@ -302,10 +305,10 @@ void COgreMain::destroySceneManager(void)
 void COgreMain::createContent(void)
 {
 	// 显示坐标轴
-	// 	Ogre::Entity* axis = mSceneMgr->createEntity("axis", "Axis.mesh");
-	// 	Ogre::SceneNode* nodeAxis = mSceneMgr->getRootSceneNode()->createChildSceneNode("nodeAxis");
-	// 	nodeAxis->attachObject(axis);
-	// 	nodeAxis->setScale(50.f, 50.f, 50.f);
+	Ogre::Entity* axis = mSceneMgr->createEntity("axis", "Axis.mesh");
+	Ogre::SceneNode* nodeAxis = mSceneMgr->getRootSceneNode()->createChildSceneNode("nodeAxis");
+	nodeAxis->attachObject(axis);
+	nodeAxis->setScale(50.f, 50.f, 50.f);
 
 	// 创建摄像头
 	mainCameraView.createCameraNode(mSceneMgr, "MainCamera", 10.f, 99999 * 6.0f);	// 10 10000
@@ -371,6 +374,22 @@ void COgreMain::createContent(void)
 	Ogre::Light* sunlight = mSceneMgr->createLight("sunlight");
 	sunlight->setType(Ogre::Light::LT_DIRECTIONAL);
 
+	// 显示地形模型
+	Entity* entTerra = mSceneMgr->createEntity("entTerra", meshName);
+	entTerra->getSubEntity(1)->setVisible(boundaryVisble);
+	entTerra->getSubEntity(2)->setVisible(boundaryVisble);
+	entTerra->getSubEntity(3)->setVisible(boundaryVisble);
+	entTerra->getSubEntity(4)->setVisible(boundaryVisble);
+	entTerra->getSubEntity(5)->setVisible(!boundaryVisble);
+	entTerra->getSubEntity(6)->setVisible(!boundaryVisble);
+	entTerra->getSubEntity(7)->setVisible(!boundaryVisble);
+	entTerra->getSubEntity(8)->setVisible(!boundaryVisble);
+	SceneNode* nodeTerraBase = mSceneMgr->createSceneNode("nodeTerraBase");
+	nodeTerraBase->attachObject(entTerra);
+	nodeTerraBase->setPosition(-entTerra->getBoundingBox().getCenter());
+	SceneNode* nodeTerra = mSceneMgr->getRootSceneNode()->createChildSceneNode("nodeTerra");
+	nodeTerra->addChild(nodeTerraBase);
+	nodeTerra->setScale(0.06f, 0.12f, 0.06f);
 }
 
 void COgreMain::destroyContent(void)
@@ -389,8 +408,8 @@ bool COgreMain::keyPressed(const OIS::KeyEvent & e)
 
 		if (pm == Ogre::PM_SOLID)
 			mainCameraView.getCamera()->setPolygonMode(Ogre::PM_WIREFRAME);
-		//else if (pm == Ogre::PM_WIREFRAME)
-		//	mainCameraView.getCamera()->setPolygonMode(Ogre::PM_POINTS);
+		else if (pm == Ogre::PM_WIREFRAME)
+			mainCameraView.getCamera()->setPolygonMode(Ogre::PM_POINTS);
 		else
 			mainCameraView.getCamera()->setPolygonMode(Ogre::PM_SOLID);
 	}
@@ -419,6 +438,30 @@ bool COgreMain::keyPressed(const OIS::KeyEvent & e)
 	else if (e.key == OIS::KC_RIGHT)
 	{
 		cameraRightTurn = true;
+	}
+
+	// 切换FPS界面显示
+	if (e.key == OIS::KC_Y)
+	{
+		if (mainOverlay->isVisible())
+			mainOverlay->hide();
+		else
+			mainOverlay->show();
+	}
+
+	// 切换边界
+	if (e.key == OIS::KC_P)
+	{
+		Entity* entTerra = mSceneMgr->getEntity("entTerra");
+		boundaryVisble = !boundaryVisble;
+		entTerra->getSubEntity(1)->setVisible(boundaryVisble);
+		entTerra->getSubEntity(2)->setVisible(boundaryVisble);
+		entTerra->getSubEntity(3)->setVisible(boundaryVisble);
+		entTerra->getSubEntity(4)->setVisible(boundaryVisble);
+		entTerra->getSubEntity(5)->setVisible(!boundaryVisble);
+		entTerra->getSubEntity(6)->setVisible(!boundaryVisble);
+		entTerra->getSubEntity(7)->setVisible(!boundaryVisble);
+		entTerra->getSubEntity(8)->setVisible(!boundaryVisble);
 	}
 
 	return true;
