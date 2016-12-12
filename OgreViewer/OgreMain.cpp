@@ -132,11 +132,11 @@ bool COgreMain::frameRenderingQueued(const Ogre::FrameEvent & evt)
 
 	// ÏÔÊ¾Ö¡ÂÊ
 	Ogre::OverlayElement* textArea = OverlayManager::getSingleton().getOverlayElement("FPS_TextArea");
-	textArea->setCaption(Ogre::DisplayString(L"FPS:     ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getBestFPS())));
+	textArea->setCaption(Ogre::DisplayString(L"FPS:      ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getBestFPS())));
 	textArea = OverlayManager::getSingleton().getOverlayElement("Batch_TextArea");
-	textArea->setCaption(Ogre::DisplayString(L"Batch:   ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getBatchCount())));
+	textArea->setCaption(Ogre::DisplayString(L"Batch:    ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getBatchCount())));
 	textArea = OverlayManager::getSingleton().getOverlayElement("Triangle_TextArea");
-	textArea->setCaption(Ogre::DisplayString(L"Triangle:") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getTriangleCount())));
+	textArea->setCaption(Ogre::DisplayString(L"Triangle: ") + Ogre::DisplayString(Ogre::StringConverter::toString(mWindow->getTriangleCount())));
 
 	return true;
 }
@@ -351,7 +351,7 @@ void COgreMain::createContent(void)
 	Ogre::OverlayContainer* ovContainer = static_cast<Ogre::OverlayContainer*>(Ogre::OverlayManager::getSingleton().createOverlayElement("BorderPanel", "Container"));
 	ovContainer->setMetricsMode(GMM_RELATIVE);
 	ovContainer->setPosition(0.f, 0.f);
-	ovContainer->setWidth(0.23f);
+	ovContainer->setWidth(0.25f);
 	ovContainer->setHeight(0.14f);
 	ovContainer->setMaterialName("Core/StatsBlockCenter");
 	mainOverlay->add2D(ovContainer);
